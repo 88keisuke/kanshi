@@ -1,0 +1,1 @@
+$((function(){location.pathname.includes("preview")&&$("html").css("pointer-events","none"),"/preview/top/pc"===location.pathname&&location.search.length>1&&"sale"===location.search.substring(1).split("&")[0].split("=")[1]&&($("#tab-rent").removeClass("select"),$("#tab-sale").addClass("select"),$(".estate-list").css("display","none"),$("#estate-sale").css("display","flex"))}));
