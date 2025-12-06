@@ -27,6 +27,7 @@ import argparse
 import sys
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
 import cv2
@@ -122,7 +123,15 @@ class ParkingAlert:
                 if conf < self.score_threshold:
                     continue
                 x1, y1, x2, y2 = map(int, box.xyxy[0].tolist())
-                if self.text_prompts is None:
+                
+                # トレーニング済みモデルの場合、クラス名を取得
+                if hasattr(result, "names") and result.names is not None:
+                    label = result.names.get(cls_id, f"class_{cls_id}")
+                    # 駐車監視員クラス（parking_officer）のみを検出
+                    if label != "parking_officer" and cls_id != PERSON_CLASS_ID:
+                        continue
+                elif self.text_prompts is None:
+                    # デフォルトのpersonクラスのみ
                     if cls_id != PERSON_CLASS_ID:
                         continue
                     label = "person"
@@ -216,7 +225,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--model",
         default="yolov8n.pt",
-        help="YOLO model checkpoint (default: yolov8n.pt)",
+        help="YOLO model checkpoint (default: yolov8n.pt). トレーニング済みモデルを使用する場合は models/parking_officer_iterXXX.pt を指定",
     )
     parser.add_argument(
         "--zone",
@@ -295,9 +304,17 @@ def main() -> None:
 
     print("--- 検知設定 ---")
     print(f"モデル: {args.model}")
-    print(
-        "検出モード: YOLO-World (テキストプロンプト)" if text_prompts else "検出モード: COCOのpersonクラス"
-    )
+    
+    # モデルがトレーニング済みかチェック
+    model_path = Path(args.model)
+    is_trained_model = model_path.exists() and "parking_officer" in str(model_path)
+    
+    if is_trained_model:
+        print("検出モード: トレーニング済み駐車監視員検出モデル")
+    elif text_prompts:
+        print("検出モード: YOLO-World (テキストプロンプト)")
+    else:
+        print("検出モード: COCOのpersonクラス")
     if text_prompts:
         print("使用プロンプト:")
         for prompt in text_prompts:
