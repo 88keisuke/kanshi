@@ -30,8 +30,19 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Optional, Tuple
 
-import cv2
-from ultralytics import YOLO
+# 依存パッケージのチェック
+try:
+    import cv2
+    from ultralytics import YOLO
+except ImportError as e:
+    print(f"エラー: 必要なパッケージがインストールされていません: {e}")
+    print()
+    print("以下のコマンドでインストールしてください:")
+    print("  pip install -r requirements.txt")
+    print()
+    print("または、自動インストールスクリプトを実行:")
+    print("  ./install_dependencies.sh")
+    sys.exit(1)
 
 # YOLO "person" class index for the COCO dataset
 PERSON_CLASS_ID = 0

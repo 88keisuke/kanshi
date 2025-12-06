@@ -12,9 +12,16 @@ import time
 import argparse
 from pathlib import Path
 from typing import List, Optional
-import requests
 from urllib.parse import quote
 import json
+
+# 依存パッケージのチェック
+try:
+    import requests
+except ImportError:
+    print("エラー: requestsがインストールされていません")
+    print("インストール: pip install requests")
+    sys.exit(1)
 
 try:
     from selenium import webdriver

@@ -14,8 +14,19 @@ from pathlib import Path
 from typing import Dict, Optional
 from datetime import datetime
 
-from collect_images import ImageCollector
-from train_model import train, create_dataset_yaml, split_dataset
+# 依存パッケージのチェック
+try:
+    from collect_images import ImageCollector
+    from train_model import train, create_dataset_yaml, split_dataset
+except ImportError as e:
+    print(f"エラー: 必要なモジュールをインポートできません: {e}")
+    print()
+    print("依存パッケージをインストールしてください:")
+    print("  pip install -r requirements.txt")
+    print()
+    print("または、自動インストールスクリプトを実行:")
+    print("  ./install_dependencies.sh")
+    sys.exit(1)
 
 
 class ContinuousTrainer:

@@ -7,11 +7,21 @@ YOLO形式のラベルファイルを生成します。
 """
 
 import argparse
-import cv2
 import sys
 from pathlib import Path
 from typing import Optional, Tuple, List
 import json
+
+# 依存パッケージのチェック
+try:
+    import cv2
+except ImportError:
+    print("エラー: opencv-pythonがインストールされていません")
+    print("インストール: pip install opencv-python")
+    print()
+    print("または、すべての依存パッケージをインストール:")
+    print("  pip install -r requirements.txt")
+    sys.exit(1)
 
 
 class ImageAnnotator:

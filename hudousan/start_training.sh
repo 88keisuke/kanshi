@@ -6,28 +6,39 @@ echo "駐車監視員検出モデル - 継続的トレーニング"
 echo "=========================================="
 echo ""
 
-# 必要なパッケージのチェック
+# 依存パッケージのチェックとインストール
 echo "依存パッケージをチェックしています..."
-python3 -c "import ultralytics" 2>/dev/null || {
-    echo "エラー: ultralyticsがインストールされていません"
-    echo "実行: pip install ultralytics"
+if [ ! -f "requirements.txt" ]; then
+    echo "エラー: requirements.txtが見つかりません"
     exit 1
-}
+fi
 
-python3 -c "import cv2" 2>/dev/null || {
-    echo "エラー: opencv-pythonがインストールされていません"
-    echo "実行: pip install opencv-python"
-    exit 1
-}
-
-python3 -c "import requests" 2>/dev/null || {
-    echo "エラー: requestsがインストールされていません"
-    echo "実行: pip install requests"
-    exit 1
-}
-
-echo "✓ すべての依存パッケージがインストールされています"
-echo ""
+# check_dependencies.pyを使用してチェック
+if python3 check_dependencies.py 2>/dev/null; then
+    echo "✓ すべての依存パッケージがインストールされています"
+    echo ""
+else
+    echo ""
+    echo "不足しているパッケージを自動インストールしますか？ (y/n)"
+    read -r response
+    if [ "$response" = "y" ] || [ "$response" = "Y" ]; then
+        echo ""
+        python3 check_dependencies.py --auto-install || {
+            echo ""
+            echo "自動インストールに失敗しました。手動でインストールしてください:"
+            echo "  ./install_dependencies.sh"
+            exit 1
+        }
+        echo ""
+    else
+        echo ""
+        echo "依存パッケージをインストールしてください:"
+        echo "  ./install_dependencies.sh"
+        echo "  または"
+        echo "  pip install -r requirements.txt"
+        exit 1
+    fi
+fi
 
 # ディレクトリの作成
 mkdir -p dataset/images

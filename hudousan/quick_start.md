@@ -39,10 +39,24 @@ python3 train_model.py --split-dataset --epochs 100
 python3 clone_home.py --model runs/detect/parking_officer/weights/best.pt --source 0
 ```
 
-## 必要なパッケージ
+## 必要なパッケージのインストール
+
+### 自動インストール（推奨）
 
 ```bash
-pip install ultralytics opencv-python requests beautifulsoup4 selenium pyyaml
+./install_dependencies.sh
+```
+
+### 手動インストール
+
+```bash
+pip install -r requirements.txt
+```
+
+### 依存関係の確認
+
+```bash
+python3 check_dependencies.py
 ```
 
 ## 注意事項

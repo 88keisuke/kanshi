@@ -10,14 +10,26 @@ import sys
 import os
 from pathlib import Path
 from typing import Optional
-import yaml
+
+# 依存パッケージのチェック
+try:
+    import yaml
+except ImportError:
+    print("エラー: pyyamlがインストールされていません")
+    print("インストール: pip install pyyaml")
+    sys.exit(1)
 
 try:
     from ultralytics import YOLO
     ULTRALYTICS_AVAILABLE = True
 except ImportError:
     ULTRALYTICS_AVAILABLE = False
-    print("エラー: ultralyticsがインストールされていません。pip install ultralytics を実行してください。")
+    print("エラー: ultralyticsがインストールされていません")
+    print("インストール: pip install ultralytics")
+    print()
+    print("または、すべての依存パッケージをインストール:")
+    print("  pip install -r requirements.txt")
+    sys.exit(1)
 
 
 def create_dataset_yaml(dataset_dir: str, output_yaml: str = "dataset.yaml") -> str:

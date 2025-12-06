@@ -17,7 +17,29 @@
 
 ## セットアップ
 
-### 必要なパッケージ
+### 依存パッケージのインストール
+
+#### 自動インストール（推奨）
+
+```bash
+# インストールスクリプトを実行
+./install_dependencies.sh
+```
+
+または、Pythonスクリプトを使用:
+
+```bash
+# 依存関係をチェックして自動インストール
+python3 check_dependencies.py --auto-install
+```
+
+#### 手動インストール
+
+```bash
+pip install -r requirements.txt
+```
+
+または個別にインストール:
 
 ```bash
 pip install ultralytics opencv-python requests beautifulsoup4 selenium pyyaml
@@ -28,8 +50,15 @@ pip install ultralytics opencv-python requests beautifulsoup4 selenium pyyaml
 画像収集機能を使用する場合は、ChromeDriverが必要です。
 
 - macOS: `brew install chromedriver`
-- Linux: パッケージマネージャーからインストール
+- Linux: `sudo apt-get install chromium-chromedriver` またはパッケージマネージャーからインストール
 - Windows: [ChromeDriver公式サイト](https://chromedriver.chromium.org/)からダウンロード
+
+### 依存関係の確認
+
+```bash
+# 依存パッケージの状態を確認
+python3 check_dependencies.py
+```
 
 ## 使用方法
 

@@ -1,0 +1,21 @@
+# 駐車監視員検出システム - 依存パッケージ
+
+# コアパッケージ
+ultralytics>=8.0.0
+opencv-python>=4.5.0
+numpy>=1.21.0
+
+# 画像収集
+requests>=2.25.0
+beautifulsoup4>=4.9.0
+selenium>=4.0.0
+
+# データ処理
+pyyaml>=5.4.0
+
+# オプション（画像収集で使用、ChromeDriverが必要）
+# ChromeDriverは別途インストールが必要です:
+# macOS: brew install chromedriver
+# Linux: sudo apt-get install chromium-chromedriver
+# Windows: https://chromedriver.chromium.org/ からダウンロード
+
